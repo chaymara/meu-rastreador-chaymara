@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Rastreador</title>
+<style>
+body { font-family: sans-serif; text-align: center; padding: 20px; background: #f0f0f0; }
+.box { background: white; padding: 15px; margin: 8px; border-radius: 10px; display: inline-block; min-width: 100px; border: 1px solid #ccc; font-weight: bold; }
+input { padding: 12px; border-radius: 8px; border: 2px solid #4CAF50; width: 160px; font-size: 16px; text-align: center; }
+button { padding: 12px 20px; border-radius: 8px; border: none; color: white; cursor: pointer; margin: 8px; font-size: 16px; font-weight: bold; }
+.btn-receita { background: #4CAF50; }
+.btn-despesa { background: #f44336; }
+button:active { transform: scale(0.95); }
+</style>
+</head>
+<body>
+
+<h1>Meu Rastreador</h1>
+
+<div id="saldo" class="box">Saldo: R$ 0</div>
+<div id="receitas" class="box">Receitas: R$ 0</div>
+<div id="despesas" class="box">Despesas: R$ 0</div>
+
+<br><br>
+<input id="valor" placeholder="Ex: 50" type="number">
+
+<br><br>
+<button id="btn-receita" class="btn-receita">+ Receita</button>
+<button id="btn-despesa" class="btn-despesa">- Despesa</button>
+
+<script>
+let saldo = Number(localStorage.getItem('saldo')) || 0;
+let receitas = Number(localStorage.getItem('receitas')) || 0;
+let despesas = Number(localStorage.getItem('despesas')) || 0;
+
+function atualizarTela() {
+  document.getElementById('saldo').innerText = "Saldo: R$ " + saldo;
+  document.getElementById('receitas').innerText = "Receitas: R$ " + receitas;
+  document.getElementById('despesas').innerText = "Despesas: R$ " + despesas;
+  localStorage.setItem('saldo', saldo);
+  localStorage.setItem('receitas', receitas);
+  localStorage.setItem('despesas', despesas);
+}
+
+document.getElementById('btn-receita').addEventListener('click', function() {
+  let campo = document.getElementById('valor');
+  let v = Number(campo.value);
+  if (!v) { alert('Digite um valor!'); return; }
+  receitas += v;
+  saldo += v;
+  campo.value = "";
+  atualizarTela();
+});
+
+document.getElementById('btn-despesa').addEventListener('click', function() {
+  let campo = document.getElementById('valor');
+  let v = Number(campo.value);
+  if (!v) { alert('Digite um valor!'); return; }
+  despesas += v;
+  saldo -= v;
+  campo.value = "";
+  atualizarTela();
+});
+
+atualizarTela();
+</script>
+
+</body>
+</html>
